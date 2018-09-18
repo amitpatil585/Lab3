@@ -1,0 +1,45 @@
+import java.io.IOException;
+import java.net.URL;
+import java.util.Scanner;
+
+public class WebScraper {
+
+    public static void main(String[] unused) {
+        //System.out.println("Ran");
+        String rawUrlText = urlToString("http://erdani.com/tdpl/hamlet.txt");
+        System.out.println("The word count is: " + wordCounter(rawUrlText, "prince"));
+
+    }
+
+    public static int wordCounter(String input, String lookFor) {
+        int wordCount = 0;
+        String[] listedInput = input.split("[\\p{Punct}\\s]+");
+        for (int i = 0; i < listedInput.length; i++) {
+            if (listedInput[i].equalsIgnoreCase(lookFor)) {
+                wordCount++;
+            }
+        }
+        return wordCount;
+    }
+
+    /**
+     * Retrieve contents from a URL and return them as a string.
+     *
+     * @param url url to retrieve contents from
+     * @return the contents from the url as a string, or an empty string on error
+     */
+    public static String urlToString(final String url) {
+        Scanner urlScanner;
+        try {
+            urlScanner = new Scanner(new URL(url).openStream(), "UTF-8");
+        } catch (IOException e) {
+            return "";
+        }
+        String contents = urlScanner.useDelimiter("\\A").next();
+        urlScanner.close();
+        return contents;
+    }
+
+
+
+}
